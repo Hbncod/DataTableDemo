@@ -12,6 +12,10 @@
             "processing": "Buscando"
             
         },
+        dom: 'Btrlp',
+        buttons: [
+            'csv', 'excel'
+        ],
         "ajax": {
             "url": "/api/customer",
             "type": "POST",
