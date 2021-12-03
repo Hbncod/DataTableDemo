@@ -10,16 +10,21 @@
             "infoEmpty": "No records available",
             "infoFiltered": "(filtered from _MAX_ total records)",
             "processing": "Buscando"
-            
         },
         dom: 'Btrlp',
         buttons: [
-            'csv', 'excel'
+            {
+                text: 'Csv',
+                action: function () {
+                    exportToCsv();
+                }
+            }
         ],
-        "ajax": {
-            "url": "/api/customer",
-            "type": "POST",
-            "datatype": "json",
+        ajax: {
+
+            url: "/api/customer/grid",
+            type: "POST",
+            "dataType": "json",
             "data": function (data) {
                 var name = $('#searchByName').val();
                 data.searchByName = name;
@@ -44,3 +49,32 @@
         dataTable.draw();
     });
 });
+
+function renderDownloadForm(format) {
+    $('#export-to-file-form').attr('action', '/api/customer/ExportTable?format=' + format);
+
+    // Get jQuery DataTables AJAX params
+    var datatableParams = $("#customerDatatable").DataTable().ajax.params();
+
+    // If the input exists, replace value, if not create the input and append to form
+    if ($("#export-to-file-form input[name=dtParametersJson]").val()) {
+        $("export-to-file-form input[name=dtParametersJson]").val(datatableParams);
+    } else {
+        var searchModelInput = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "dtParametersJson")
+            .val(JSON.stringify(datatableParams));
+        
+        console.log(searchModelInput);
+
+        console.log(datatableParams);
+
+
+        $("#export-to-file-form").append(searchModelInput);
+    }
+}
+
+function exportToCsv() {
+    renderDownloadForm("csv");
+    $("#export-to-file-form").submit();
+}

@@ -1,4 +1,5 @@
 using JQueryDataTables.Data;
+using JQueryDataTables.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,9 @@ namespace JQueryDataTables
                     Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             services.AddControllersWithViews();
-        }
 
+            services.AddScoped<ICustomerExportProvider, CustomerExportProvider>();
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

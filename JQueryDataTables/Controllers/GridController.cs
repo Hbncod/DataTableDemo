@@ -1,8 +1,8 @@
 ﻿using JQueryDataTables.Extensions;
+using JQueryDataTables.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using static JQueryDataTables.Models.DtOrder;
 
 namespace JQueryDataTables.Controllers
 {
@@ -19,7 +19,10 @@ namespace JQueryDataTables.Controllers
             int skip = start != null ? Convert.ToInt32(start) : 0;
             int recordsTotal = tentities.Count();
 
-            tentities = tentities.OrderByDynamic(sortColumn, sortColumnDirection);
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                tentities = tentities.OrderByDynamic(sortColumn, sortColumnDirection);
+            }
 
             var recordsFiltered = tentities.Count();
             var data = tentities.Skip(skip).Take(pageSize).ToList();

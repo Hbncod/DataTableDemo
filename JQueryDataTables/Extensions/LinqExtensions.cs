@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using JQueryDataTables.Models;
+using System.Linq;
 using System.Linq.Expressions;
-using static JQueryDataTables.Models.DtOrder;
 
 namespace JQueryDataTables.Extensions
 {
