@@ -53,23 +53,17 @@
 function renderDownloadForm(format) {
     $('#export-to-file-form').attr('action', '/api/customer/ExportTable?format=' + format);
 
-    // Get jQuery DataTables AJAX params
     var datatableParams = $("#customerDatatable").DataTable().ajax.params();
+    console.log(JSON.stringify(datatableParams));
 
-    // If the input exists, replace value, if not create the input and append to form
     if ($("#export-to-file-form input[name=dtParametersJson]").val()) {
-        $("export-to-file-form input[name=dtParametersJson]").val(datatableParams);
+        $("#export-to-file-form input[name=dtParametersJson]").val(JSON.stringify(datatableParams));
     } else {
         var searchModelInput = $("<input>")
             .attr("type", "hidden")
             .attr("name", "dtParametersJson")
             .val(JSON.stringify(datatableParams));
         
-        console.log(searchModelInput);
-
-        console.log(datatableParams);
-
-
         $("#export-to-file-form").append(searchModelInput);
     }
 }
