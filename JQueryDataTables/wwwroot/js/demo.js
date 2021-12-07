@@ -54,18 +54,16 @@ function renderDownloadForm(format) {
     $('#export-to-file-form').attr('action', '/api/customer/ExportTable?format=' + format);
 
     var datatableParams = $("#customerDatatable").DataTable().ajax.params();
-    console.log(JSON.stringify(datatableParams));
 
-    if ($("#export-to-file-form input[name=dtParametersJson]").val()) {
-        $("#export-to-file-form input[name=dtParametersJson]").val(JSON.stringify(datatableParams));
-    } else {
+    if (!$("#export-to-file-form input[name=dtParametersJson]").val()) {
         var searchModelInput = $("<input>")
             .attr("type", "hidden")
             .attr("name", "dtParametersJson")
-            .val(JSON.stringify(datatableParams));
-        
+
         $("#export-to-file-form").append(searchModelInput);
     }
+
+    $("#export-to-file-form input[name=dtParametersJson]").val(JSON.stringify(datatableParams));
 }
 
 function exportToCsv() {
