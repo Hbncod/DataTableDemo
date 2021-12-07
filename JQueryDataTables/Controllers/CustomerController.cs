@@ -1,5 +1,6 @@
 ﻿using JQueryDataTables.Controllers;
 using JQueryDataTables.Data;
+using JQueryDataTables.Extensions;
 using JQueryDataTables.Models;
 using JQueryDataTables.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -54,12 +55,18 @@ namespace Datatables.ServerSide.Controllers
                 result = result.Where(x => x.FirstName.ToLower().Contains(dtParameters.SearchByName.ToLower()));
             }
 
-            var a = result.Skip(dtParameters.Start).Take(dtParameters.Length).ToList();
+            var sortOrder = dtParameters.SortOrder.Split(" ");
+            if (!string.IsNullOrEmpty(dtParameters.SortOrder))
+            {
+                result = result.OrderByDynamic(sortOrder[0], dtParameters.Order[0].Dir);
+            }
+
+            result = result.Skip(dtParameters.Start).Take(dtParameters.Length);
 
             switch (format)
             {
                 case "csv":
-                    return await GerarCSV(a);
+                    return await GerarCSV(result.ToList());
             }
 
             return Ok();
